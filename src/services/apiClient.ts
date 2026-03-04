@@ -1,11 +1,17 @@
 const DEFAULT_API_URL = 'https://liquid-spirit-backend-prod-34ac4484898d.herokuapp.com';
-const API_URL = (import.meta.env.VITE_API_URL as string | undefined) || DEFAULT_API_URL;
+export const API_URL = (import.meta.env.VITE_API_URL as string | undefined) || DEFAULT_API_URL;
 
 export function getStoredToken(): string {
   return localStorage.getItem('token') || '';
 }
 
-export function getStoredUser(): { id?: string; _id?: string; community?: { _id?: string; id?: string } } | null {
+export function clearStoredAuth(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+}
+
+export function getStoredUser(): { id?: string; _id?: string; firstName?: string; lastName?: string; email?: string; community?: { _id?: string; id?: string } } | null {
   try {
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
