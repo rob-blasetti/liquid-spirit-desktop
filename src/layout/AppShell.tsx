@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 const navItems = [
-  { to: '/', label: 'Dashboard', end: true },
-  { to: '/members', label: 'Members' },
-  { to: '/approvals', label: 'Approvals' },
-  { to: '/treasury', label: 'Treasury' },
+  { to: '/', label: 'Home', end: true },
+  { to: '/discover', label: 'Discover' },
+  { to: '/news', label: 'News' },
+  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/profile', label: 'Profile' },
   { to: '/settings', label: 'Settings' },
 ];
 
