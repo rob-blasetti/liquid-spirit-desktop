@@ -1,2 +1,33 @@
 html, body, #root { margin: 0; padding: 0; width: 100%; min-height: 100%; }
 * { box-sizing: border-box; }
+body {
+  background: var(--ls-bg);
+  color: var(--ls-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+h1,h2,h3,p { margin: 0; }
+
+.ui-card {
+  background: var(--ls-surface);
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-radius-md);
+  padding: var(--ls-space-4);
+  display: grid;
+  gap: var(--ls-space-2);
+}
+
+.section-header {
+  margin-bottom: var(--ls-space-4);
+  display: grid;
+  gap: var(--ls-space-1);
+}
+
+.section-header h2 {
+  font-size: 1.15rem;
+}
+
+.section-header p {
+  color: var(--ls-muted);
+  font-size: 0.92rem;
+}

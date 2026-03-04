@@ -1,3 +1,9 @@
+import SectionHeader from '../components/ui/SectionHeader';
+
 export default function SettingsPage() {
-  return <div><h2>Settings</h2><p>Desktop preferences, account/session, and app config.</p></div>;
+  return (
+    <div>
+      <SectionHeader title="Settings" subtitle="Desktop preferences, account/session, and app config." />
+    </div>
+  );
 }

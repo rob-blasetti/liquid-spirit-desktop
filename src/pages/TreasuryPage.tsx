@@ -1,3 +1,9 @@
+import SectionHeader from '../components/ui/SectionHeader';
+
 export default function TreasuryPage() {
-  return <div><h2>Treasury</h2><p>Fund balances, transactions, and reconciliation view.</p></div>;
+  return (
+    <div>
+      <SectionHeader title="Treasury" subtitle="Fund balances, transactions, and reconciliation view." />
+    </div>
+  );
 }

@@ -1,3 +1,9 @@
+import SectionHeader from '../components/ui/SectionHeader';
+
 export default function MembersPage() {
-  return <div><h2>Members</h2><p>Directory, search, and profile drill-down will live here.</p></div>;
+  return (
+    <div>
+      <SectionHeader title="Members" subtitle="Directory, search, and profile drill-down will live here." />
+    </div>
+  );
 }
