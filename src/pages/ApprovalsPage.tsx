@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import Button from 'liquid-spirit-styleguide/web/Button';
+import Typography from 'liquid-spirit-styleguide/web/Typography';
 import SectionHeader from '../components/ui/SectionHeader';
 import Card from '../components/ui/Card';
 
@@ -46,19 +48,19 @@ export default function ApprovalsPage() {
             {pendingApprovals.map((approval) => (
               <article key={approval.id} className="approval-item">
                 <div className="approval-main">
-                  <strong>{approval.title}</strong>
-                  <p>{approval.type} · {approval.submittedBy}</p>
-                  <small>{new Date(approval.date).toLocaleDateString()}</small>
+                  <Typography as="strong" size="small">{approval.title}</Typography>
+                  <Typography as="p" size="small">{approval.type} · {approval.submittedBy}</Typography>
+                  <Typography as="small" size="small">{new Date(approval.date).toLocaleDateString()}</Typography>
                 </div>
                 <div className="approval-actions">
-                  <button className="btn approve" onClick={() => updateApprovalStatus(approval.id, 'Approved')}>Approve</button>
-                  <button className="btn decline" onClick={() => updateApprovalStatus(approval.id, 'Declined')}>Decline</button>
+                  <Button label="Approve" onPress={() => updateApprovalStatus(approval.id, 'Approved')} secondary />
+                  <Button label="Decline" onPress={() => updateApprovalStatus(approval.id, 'Declined')} error />
                 </div>
               </article>
             ))}
           </div>
         ) : (
-          <p className="empty-text">No pending approvals.</p>
+          <Typography as="p" size="small" className="empty-text">No pending approvals.</Typography>
         )}
       </Card>
 
@@ -69,7 +71,7 @@ export default function ApprovalsPage() {
             .slice(0, 8)
             .map((approval) => (
               <div key={approval.id} className="decision-row">
-                <span>{approval.title}</span>
+                <Typography as="span" size="small">{approval.title}</Typography>
                 <span className={`status-pill ${approval.status.toLowerCase()}`}>
                   {approval.status}
                 </span>

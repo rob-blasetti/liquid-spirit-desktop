@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react';
+import { type ChangeEvent } from 'react';
+import Input from 'liquid-spirit-styleguide/web/Input';
+import Select from 'liquid-spirit-styleguide/web/Select';
 import SectionHeader from '../components/ui/SectionHeader';
+import Card from '../components/ui/Card';
 
 const MOCK_MEMBERS = [
   { id: 'm1', name: 'Aaliyah Rahimi', community: 'Northside', role: 'Secretary', status: 'Active' },
@@ -37,56 +41,60 @@ export default function MembersPage() {
       />
 
       <div className="filters-bar">
-        <input
-          className="input"
+        <Input
+          label="Search"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
           placeholder="Search by name or role"
         />
 
-        <select className="input" value={communityFilter} onChange={(event) => setCommunityFilter(event.target.value)}>
-          {communities.map((community) => (
-            <option key={community}>{community}</option>
-          ))}
-        </select>
+        <Select
+          label="Community"
+          value={communityFilter}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setCommunityFilter(event.target.value)}
+          options={communities}
+        />
 
-        <select className="input" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
-          {['All', 'Active', 'Pending', 'Inactive'].map((status) => (
-            <option key={status}>{status}</option>
-          ))}
-        </select>
+        <Select
+          label="Status"
+          value={statusFilter}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setStatusFilter(event.target.value)}
+          options={['All', 'Active', 'Pending', 'Inactive']}
+        />
       </div>
 
-      <div className="table-wrap">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Community</th>
-              <th>Role</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMembers.length ? (
-              filteredMembers.map((member) => (
-                <tr key={member.id}>
-                  <td>{member.name}</td>
-                  <td>{member.community}</td>
-                  <td>{member.role}</td>
-                  <td>
-                    <span className={`status-pill ${member.status.toLowerCase()}`}>{member.status}</span>
-                  </td>
-                </tr>
-              ))
-            ) : (
+      <Card title="Member directory">
+        <div className="table-wrap">
+          <table className="table">
+            <thead>
               <tr>
-                <td colSpan={4} className="empty-cell">No members match these filters.</td>
+                <th>Name</th>
+                <th>Community</th>
+                <th>Role</th>
+                <th>Status</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredMembers.length ? (
+                filteredMembers.map((member) => (
+                  <tr key={member.id}>
+                    <td>{member.name}</td>
+                    <td>{member.community}</td>
+                    <td>{member.role}</td>
+                    <td>
+                      <span className={`status-pill ${member.status.toLowerCase()}`}>{member.status}</span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="empty-cell">No members match these filters.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }

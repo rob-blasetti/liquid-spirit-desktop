@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Button from 'liquid-spirit-styleguide/web/Button';
+import Typography from 'liquid-spirit-styleguide/web/Typography';
 import { NavLink, Outlet } from 'react-router-dom';
 
 const navItems = [
@@ -18,7 +20,7 @@ export default function AppShell() {
       <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="brand">
           <img src="/LS-Logo.svg" alt="Liquid Spirit logo" className="brand-logo" />
-          <h1>Liquid Spirit</h1>
+          <Typography as="h1" size="large">Liquid Spirit</Typography>
         </div>
         {navItems.map((item) => (
           <NavLink
@@ -28,7 +30,7 @@ export default function AppShell() {
             className="nav-link"
             onClick={() => setMobileMenuOpen(false)}
           >
-            {item.label}
+            <Typography as="span" size="small">{item.label}</Typography>
           </NavLink>
         ))}
       </aside>
@@ -36,10 +38,8 @@ export default function AppShell() {
 
       <section className="content">
         <header className="topbar">
-          <button className="menu-toggle" onClick={() => setMobileMenuOpen((v) => !v)} aria-label="Toggle navigation">
-            ☰
-          </button>
-          Desktop Admin
+          <Button className="menu-toggle" onPress={() => setMobileMenuOpen((v) => !v)} label="☰" aria-label="Toggle navigation" tertiary />
+          <Typography as="span" size="small">Desktop Admin</Typography>
         </header>
         <main className="page"><Outlet /></main>
       </section>
