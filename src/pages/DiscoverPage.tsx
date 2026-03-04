@@ -1,20 +1,25 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SectionHeader from '../components/ui/SectionHeader';
 import Card from '../components/ui/Card';
+import { fetchDiscoverActivities } from '../services/desktopDataService';
 
-const ACTIVITIES = [
-  { id: 'd1', type: 'Devotional', title: 'Neighborhood devotional', date: 'Thu 7:30 PM', location: 'Northside' },
-  { id: 'd2', type: 'Youth', title: 'Junior youth circle', date: 'Fri 6:00 PM', location: 'West End' },
-  { id: 'd3', type: 'Study', title: 'Book study group', date: 'Sat 4:00 PM', location: 'Riverdale' },
-];
+type Activity = { id?: string; _id?: string; title?: string; type?: string; activityType?: { name?: string }; location?: { city?: string } | string; dateTime?: string };
 
 export default function DiscoverPage() {
   const [typeFilter, setTypeFilter] = useState('All');
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [error, setError] = useState('');
 
-  const filtered = useMemo(
-    () => (typeFilter === 'All' ? ACTIVITIES : ACTIVITIES.filter((activity) => activity.type === typeFilter)),
-    [typeFilter],
-  );
+  useEffect(() => {
+    fetchDiscoverActivities()
+      .then((data) => setActivities(Array.isArray(data) ? data : []))
+      .catch((err) => setError(err.message || 'Unable to load activities'));
+  }, []);
+
+  const filtered = useMemo(() => {
+    if (typeFilter === 'All') return activities;
+    return activities.filter((activity) => (activity.activityType?.name || activity.type || 'Other') === typeFilter);
+  }, [activities, typeFilter]);
 
   return (
     <div>
@@ -25,20 +30,24 @@ export default function DiscoverPage() {
 
       <div className="filters-bar">
         <select className="input" value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
-          {['All', 'Devotional', 'Youth', 'Study'].map((type) => (
+          {['All', ...new Set(activities.map((a) => a.activityType?.name || a.type || 'Other'))].map((type) => (
             <option key={type}>{type}</option>
           ))}
         </select>
       </div>
 
       <Card title="Activities">
+        {error ? <p className="empty-text">{error}</p> : null}
         <div className="list-stack">
           {filtered.map((activity) => (
-            <div key={activity.id} className="list-row">
-              <strong>{activity.title}</strong>
-              <div>{activity.type} · {activity.location} · {activity.date}</div>
+            <div key={activity.id || activity._id} className="list-row">
+              <strong>{activity.title || 'Activity'}</strong>
+              <div>
+                {(activity.activityType?.name || activity.type || 'Other')} · {(typeof activity.location === 'string' ? activity.location : activity.location?.city || 'TBD')} · {(activity.dateTime ? new Date(activity.dateTime).toLocaleString() : 'TBD')}
+              </div>
             </div>
           ))}
+          {!error && !filtered.length ? <p className="empty-text">No activities found.</p> : null}
         </div>
       </Card>
     </div>

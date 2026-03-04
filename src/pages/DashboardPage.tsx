@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import SectionHeader from '../components/ui/SectionHeader';
 import StatCard from '../components/ui/StatCard';
 import ListCard from '../components/ui/ListCard';
+import { fetchDashboardSummary } from '../services/desktopDataService';
 
 const pendingApprovals = [
   'Venue request · Feast at Northside · 2h ago',
@@ -15,6 +17,12 @@ const upcomingSessions = [
 ];
 
 export default function DashboardPage() {
+  const [summary, setSummary] = useState<any>(null);
+
+  useEffect(() => {
+    fetchDashboardSummary().then(setSummary).catch(() => setSummary(null));
+  }, []);
+
   return (
     <div>
       <SectionHeader
@@ -23,9 +31,9 @@ export default function DashboardPage() {
       />
 
       <div className="stats-grid">
-        <StatCard label="Pending approvals" value="12" hint="3 urgent" />
-        <StatCard label="Upcoming sessions" value="8" hint="Next in 2 hours" />
-        <StatCard label="Treasury balance" value="$24,930" hint="+4.2% this month" />
+        <StatCard label="Pending approvals" value={String(summary?.pendingApprovals ?? 12)} hint="3 urgent" />
+        <StatCard label="Upcoming sessions" value={String(summary?.upcomingSessions ?? 8)} hint="Next in 2 hours" />
+        <StatCard label="Treasury balance" value={summary?.treasuryBalance ? `$${summary.treasuryBalance}` : '$24,930'} hint="+4.2% this month" />
       </div>
 
       <div className="dashboard-grid">
