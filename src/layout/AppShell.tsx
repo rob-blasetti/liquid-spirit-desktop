@@ -12,7 +12,10 @@ export default function AppShell() {
   return (
     <div className="shell">
       <aside className="sidebar">
-        <h1>Liquid Spirit</h1>
+        <div className="brand">
+          <img src="/LS-Logo.svg" alt="Liquid Spirit logo" className="brand-logo" />
+          <h1>Liquid Spirit</h1>
+        </div>
         {navItems.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.end} className="nav-link">
             {item.label}
