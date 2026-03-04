@@ -1,0 +1,16 @@
+:root {
+  --ls-bg: #f4f7fb;
+  --ls-surface: #ffffff;
+  --ls-text: #1a2a40;
+  --ls-muted: #5f708b;
+  --ls-border: #d8e1ee;
+  --ls-primary: #2f6fed;
+  --ls-primary-strong: #1f56bd;
+  --ls-radius-sm: 8px;
+  --ls-radius-md: 12px;
+  --ls-space-1: 4px;
+  --ls-space-2: 8px;
+  --ls-space-3: 12px;
+  --ls-space-4: 16px;
+  --ls-space-5: 20px;
+}
