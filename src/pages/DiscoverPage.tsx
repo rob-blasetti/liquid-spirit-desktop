@@ -1,9 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useState } from 'react';
+import Select from 'liquid-spirit-styleguide/web/Select';
 import SectionHeader from '../components/ui/SectionHeader';
 import Card from '../components/ui/Card';
+import ActivityCard from '../components/cards/ActivityCard';
+import EventCard from '../components/cards/EventCard';
 import { fetchDiscoverActivities } from '../services/desktopDataService';
 
-type Activity = { id?: string; _id?: string; title?: string; type?: string; activityType?: { name?: string }; location?: { city?: string } | string; dateTime?: string };
+type Activity = {
+  id?: string;
+  _id?: string;
+  title?: string;
+  type?: string;
+  activityType?: { name?: string };
+  location?: { city?: string } | string;
+  dateTime?: string;
+  imageUrl?: string;
+};
 
 export default function DiscoverPage() {
   const [typeFilter, setTypeFilter] = useState('All');
@@ -29,25 +41,40 @@ export default function DiscoverPage() {
       />
 
       <div className="filters-bar">
-        <select className="input" value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
-          {['All', ...new Set(activities.map((a) => a.activityType?.name || a.type || 'Other'))].map((type) => (
-            <option key={type}>{type}</option>
-          ))}
-        </select>
+        <Select
+          label="Activity type"
+          value={typeFilter}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setTypeFilter(event.target.value)}
+          options={['All', ...new Set(activities.map((a) => a.activityType?.name || a.type || 'Other'))]}
+        />
       </div>
 
       <Card title="Activities">
         {error ? <p className="empty-text">{error}</p> : null}
-        <div className="list-stack">
+        <div className="cards-grid">
           {filtered.map((activity) => (
-            <div key={activity.id || activity._id} className="list-row">
-              <strong>{activity.title || 'Activity'}</strong>
-              <div>
-                {(activity.activityType?.name || activity.type || 'Other')} · {(typeof activity.location === 'string' ? activity.location : activity.location?.city || 'TBD')} · {(activity.dateTime ? new Date(activity.dateTime).toLocaleString() : 'TBD')}
-              </div>
-            </div>
+            <ActivityCard key={activity.id || activity._id} activity={activity} />
           ))}
           {!error && !filtered.length ? <p className="empty-text">No activities found.</p> : null}
+        </div>
+      </Card>
+
+      <Card title="Upcoming Events">
+        <div className="cards-grid">
+          {filtered.slice(0, 4).map((activity, index) => (
+            <EventCard
+              key={`event-${activity.id || activity._id || index}`}
+              event={{
+                id: String(activity.id || activity._id || index),
+                title: activity.title || 'Community Event',
+                subtitle: activity.activityType?.name || activity.type || 'Event',
+                dateLabel: activity.dateTime ? new Date(activity.dateTime).toLocaleString() : 'TBD',
+                location: typeof activity.location === 'string' ? activity.location : activity.location?.city,
+                imageUrl: activity.imageUrl,
+              }}
+            />
+          ))}
+          {!error && !filtered.length ? <p className="empty-text">No events found.</p> : null}
         </div>
       </Card>
     </div>

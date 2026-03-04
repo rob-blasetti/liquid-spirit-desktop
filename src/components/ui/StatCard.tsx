@@ -1,3 +1,6 @@
+import Typography from 'liquid-spirit-styleguide/web/Typography';
+import CTACard from 'liquid-spirit-styleguide/web/CTACard';
+
 type StatCardProps = {
   label: string;
   value: string;
@@ -6,10 +9,15 @@ type StatCardProps = {
 
 export default function StatCard({ label, value, hint }: StatCardProps) {
   return (
-    <section className="stat-card">
-      <span className="stat-label">{label}</span>
-      <strong className="stat-value">{value}</strong>
-      {hint ? <small className="stat-hint">{hint}</small> : null}
-    </section>
+    <CTACard
+      title={label}
+      variant="tertiary"
+      description={(
+        <div className="stat-body">
+          <Typography as="strong" size="large">{value}</Typography>
+          {hint ? <Typography as="small" size="small">{hint}</Typography> : null}
+        </div>
+      )}
+    />
   );
 }

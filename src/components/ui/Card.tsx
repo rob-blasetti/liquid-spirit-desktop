@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import CTACard from 'liquid-spirit-styleguide/web/CTACard';
 
 type CardProps = {
   title?: string;
@@ -6,10 +7,5 @@ type CardProps = {
 };
 
 export default function Card({ title, children }: CardProps) {
-  return (
-    <section className="ui-card">
-      {title ? <h3>{title}</h3> : null}
-      {children}
-    </section>
-  );
+  return <CTACard title={title} description={children} variant="secondary" className="ls-block-card" />;
 }

@@ -1,11 +1,15 @@
 import { useMemo, useState } from 'react';
+import Button from 'liquid-spirit-styleguide/web/Button';
+import Checkbox from 'liquid-spirit-styleguide/web/Checkbox';
 import SectionHeader from '../components/ui/SectionHeader';
 import Card from '../components/ui/Card';
-import { API_URL, clearStoredAuth, getStoredToken, getStoredUser } from '../services/apiClient';
+import { API_URL, getStoredToken, getStoredUser } from '../services/apiClient';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function SettingsPage() {
   const [compactMode, setCompactMode] = useState(localStorage.getItem('ls.desktop.compactMode') === '1');
   const [signedOut, setSignedOut] = useState(false);
+  const { signOut } = useAuth();
 
   const user = useMemo(() => getStoredUser(), []);
   const hasToken = Boolean(getStoredToken());
@@ -18,8 +22,8 @@ export default function SettingsPage() {
     });
   };
 
-  const signOut = () => {
-    clearStoredAuth();
+  const onSignOut = () => {
+    signOut();
     setSignedOut(true);
   };
 
@@ -33,16 +37,15 @@ export default function SettingsPage() {
             <div className="list-row">Signed in: {hasToken && !signedOut ? 'Yes' : 'No'}</div>
             <div className="list-row">Name: {user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User' : '—'}</div>
             <div className="list-row">Email: {user?.email || '—'}</div>
-            <button className="btn" onClick={signOut}>Sign out (local)</button>
+            <Button label="Sign out (local)" onPress={onSignOut} secondary />
           </div>
         </Card>
 
         <Card title="Desktop preferences">
           <div className="list-stack">
-            <label className="list-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              Compact mode
-              <input type="checkbox" checked={compactMode} onChange={toggleCompactMode} />
-            </label>
+            <div className="list-row">
+              <Checkbox label="Compact mode" checked={compactMode} onChange={toggleCompactMode} />
+            </div>
             <div className="list-row">Theme: System (placeholder)</div>
             <div className="list-row">Notifications: Enabled (placeholder)</div>
           </div>
